@@ -1,5 +1,6 @@
 
 <script lang="ts">
+    import Sidebar from "$lib/components/Sidebar.svelte";
     import "./app.css";
 
     import { path, prefs } from 'svelte-pathfinder';
@@ -12,5 +13,9 @@
     $: page = routes[$path] || routes['/']
 
 </script>
-
-<svelte:component this={page} />
+<Sidebar />
+<div class="flex justify-center mt-20">
+    <div>
+        <svelte:component this={page} />
+    </div>
+</div>
