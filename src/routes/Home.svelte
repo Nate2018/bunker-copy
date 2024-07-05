@@ -50,10 +50,10 @@
     
 </script>
 
-<h1 class="font-bold text-5xl"> Bunker </h1>
+<h1 class="font-bold text-5xl text-center"> Bunker </h1>
 <div class="flex">
     {#each $plugins as plugin}
-        <div class="bg-gray-900 rounded-lg p-4">
+        <div class="bg-gray-900 rounded-lg p-4 mt-2">
             <h1 class="font-bold text-3xl"> {plugin.name} </h1>
             <p>{plugin.version}</p>
             {#await loadComponent(plugin.content.svelte) then myComponent}
@@ -67,19 +67,20 @@
     {/each}
 
     {#each $externalPlugins as plugin}
-        <div class="bg-gray-900 rounded-lg p-4">
-            <h1 class="font-bold text-3xl"> {plugin.name} </h1>
-            <p>{plugin.author}</p>
+        <div class="bg-gray-900 rounded-lg p-4 mt-2 ml-4">
+            <h1 class="font-bold text-3xl text-left"> {plugin.name} </h1>
+            <!--<p>{plugin.author}</p>
             <p>{plugin.description}</p>
             <p>{plugin.version}</p>
-            <p>{plugin.id}</p>
+            <p>{plugin.id}</p>-->
             <PluginLoader this={plugin.content} prop="Foo" otherProp="Bar" />
         </div>
     {/each}
 </div>
-
+<div class="mt-2">
 <RouteButton variant="secondary" href="/viewer">Go to Viewer</RouteButton>
 
 <Button variant="destructive" on:click={clearPlugins}>Clear plugins</Button>
 <Button variant="outline" on:click={addPlugin}>Add plugin</Button>
-<Button variant="outline" on:click={() => fetchAndAddPlugin('https://raw.githubusercontent.com/Cattn/sample-bunker-plugin/95f2d42bb5415e09c298db060bed493266f334f3/dist/')}>Fetch and Add Plugin</Button>
+<Button variant="outline" on:click={() => fetchAndAddPlugin('https://raw.githubusercontent.com/Cattn/sample-bunker-plugin/main/dist/')}>Fetch and Add Plugin</Button>
+</div>
