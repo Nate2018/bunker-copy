@@ -82,5 +82,5 @@
 
 <Button variant="destructive" on:click={clearPlugins}>Clear plugins</Button>
 <Button variant="outline" on:click={addPlugin}>Add plugin</Button>
-<Button variant="outline" on:click={() => fetchAndAddPlugin('https://raw.githubusercontent.com/Cattn/sample-bunker-plugin/main/dist/')}>Fetch and Add Plugin</Button>
+<Button variant="outline" on:click={() => fetchAndAddPlugin('https://raw.githubusercontent.com/Cattn/sample-bunker-plugin/c0a4bff6f9c66e6876242e8a0d39e9b8022f2bf0/dist/')}>Fetch and Add Plugin</Button>
 </div>
