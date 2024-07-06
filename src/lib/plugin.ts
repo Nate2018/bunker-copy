@@ -5,4 +5,5 @@ export interface Plugin {
     author: string
     description: any 
     content: any
+    type: String
   }

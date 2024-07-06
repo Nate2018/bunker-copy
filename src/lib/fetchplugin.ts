@@ -10,19 +10,23 @@ export async function fetchExternalPlugin(url: string): Promise<Plugin | undefin
     const plugin = JSON.parse(await blob.text()) as Plugin
     console.log(plugin)
    
-    let content: any;
+    
+    if (plugin.type == "tile"){
+      const moduleResponse = await fetch(url + plugin.content)
+      if (!moduleResponse.ok) {
+        throw new Error(`Failed to load ${plugin.name}`)
+      }
+      const moduleText = await moduleResponse.text()
+      const moduleBlob = new Blob([moduleText], { type: 'application/javascript' })
+      const moduleUrl = URL.createObjectURL(moduleBlob)
+      const module = await import(/* @vite-ignore */moduleUrl)
+      plugin.content = module.default
 
-    const moduleResponse = await fetch(url + plugin.content)
-    if (!moduleResponse.ok) {
-      throw new Error(`Failed to load ${plugin.name}`)
+      return plugin
+    } else if (plugin.type == "app") {
+      
+      return plugin
     }
-    const moduleText = await moduleResponse.text()
-    const moduleBlob = new Blob([moduleText], { type: 'application/javascript' })
-    const moduleUrl = URL.createObjectURL(moduleBlob)
-    const module = await import(/* @vite-ignore */moduleUrl)
-    plugin.content = module.default
-
-    return plugin
 
   } catch (error) {
     toast.push(`Failed to fetch plugin:`, { theme: { '--toastBackground': 'red' } })
