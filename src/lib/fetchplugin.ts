@@ -19,7 +19,7 @@ export async function fetchExternalPlugin(url: string): Promise<Plugin | undefin
     const moduleText = await moduleResponse.text()
     const moduleBlob = new Blob([moduleText], { type: 'application/javascript' })
     const moduleUrl = URL.createObjectURL(moduleBlob)
-    const module = await import(moduleUrl)
+    const module = await import(/* @vite-ignore */moduleUrl)
     plugin.content = module.default
 
     return plugin
