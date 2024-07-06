@@ -2,7 +2,50 @@
     import RouteButton from "$lib/components/routeButtons/RouteButton.svelte";
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import Button from "./ui/button/button.svelte";
-    import { House, LibraryBig } from "lucide-svelte";
+    import { House, LibraryBig, SquarePlus } from "lucide-svelte";
+    import { externalPlugins, loadStore, externalAppLocations, externalApps, currentApp } from "../store";
+    import { onMount } from 'svelte';
+    import { fetchExternalPlugin } from "$lib/fetchplugin";
+    import type { Plugin } from "$lib/plugin";
+    import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
+    import Input from "./ui/input/input.svelte";
+    import { goto } from 'svelte-pathfinder'
+
+    let appURL: string = '';
+
+    onMount(async () => {
+        loadStore();
+        await loadApps();
+    });
+
+    async function loadApps() {
+        for (const app of $externalAppLocations) {
+            const plugin = await fetchExternalPlugin(app);
+            if (plugin) {
+                externalApps.update((currentApps: Plugin[]) => [...currentApps, plugin]);
+            }
+        }
+    }
+
+    async function fetchAndAddApp(url: string) {
+        externalAppLocations.update((currentAppLocations: string[]) => [...currentAppLocations, url]);
+        const plugin = await fetchExternalPlugin(url);
+        if (plugin) {
+            externalApps.update((currentApps: Plugin[]) => [...currentApps, plugin]);
+        }
+        appURL = '';
+    }
+
+    function clearApps() {
+        externalApps.set([]);
+        externalAppLocations.set([]);
+    }
+
+    function setActiveApp(plugin: Plugin) {
+        currentApp.set(plugin);
+        console.log("erm")
+        goto("/app");
+    }
 </script>
     <div class="w-16 h-screen bg-zinc-800 flex flex-col justify-between fixed left-0 top-0 z-40">
       <div>
@@ -24,9 +67,48 @@
               <p>Library</p>
             </Tooltip.Content>
           </Tooltip.Root>
+
+          {#each $externalApps as plugin}
+            <Tooltip.Root openDelay={50}>
+              <Tooltip.Trigger asChild let:builder>
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <Button builders={[builder]} on:click={() => setActiveApp(plugin)} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline"><LibraryBig /><!-- <img src={plugin.icon} /> --></Button>
+              </Tooltip.Trigger>
+              <Tooltip.Content class="border border-zinc-700" side="right">
+                <p>{plugin.name}</p>
+              </Tooltip.Content>
+            </Tooltip.Root>
+          {/each}
+          
         </div>
       </div>
       <div>
-        <div class="font-extrabold text-3xl bg-zinc-700 aspect-square m-3 rounded-lg flex items-center justify-center cursor-pointer">B</div>
+        <AlertDialog.Root>
+          <AlertDialog.Trigger>
+            <Tooltip.Root openDelay={50}>
+              <Tooltip.Trigger asChild let:builder>
+                <Button builders={[builder]} class="font-extrabold text-3xl bg-zinc-700 aspect-square m-3 p-0 rounded-lg flex items-center justify-center cursor-pointer"><SquarePlus color="black" /></Button>
+              </Tooltip.Trigger>
+              <Tooltip.Content class="border border-zinc-700" side="right">
+                <p>Add App</p>
+              </Tooltip.Content>
+            </Tooltip.Root>
+          </AlertDialog.Trigger>
+          <AlertDialog.Content>
+            <AlertDialog.Header>
+              <AlertDialog.Title class="px-4 pt-4">Add App</AlertDialog.Title>
+              <AlertDialog.Description class="px-4">
+                Input the link to the directory of the plugin. Make sure you trust the plugin's source, as they could be malicious.
+      
+                <Input bind:value={appURL} type="text" placeholder="App URL" class="w-full mt-1" />
+              </AlertDialog.Description>
+            </AlertDialog.Header>
+            <AlertDialog.Footer>
+              <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+              <AlertDialog.Action on:click={() => fetchAndAddApp(appURL)}>Submit</AlertDialog.Action>
+              <AlertDialog.Action on:click={() => clearApps()}>Clear Apps</AlertDialog.Action>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
       </div>
     </div>

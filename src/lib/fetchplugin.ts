@@ -11,7 +11,6 @@ export async function fetchExternalPlugin(url: string): Promise<Plugin | undefin
     console.log(plugin)
    
     
-    if (plugin.type == "tile"){
       const moduleResponse = await fetch(url + plugin.content)
       if (!moduleResponse.ok) {
         throw new Error(`Failed to load ${plugin.name}`)
@@ -22,15 +21,14 @@ export async function fetchExternalPlugin(url: string): Promise<Plugin | undefin
       const module = await import(/* @vite-ignore */moduleUrl)
       plugin.content = module.default
 
+      if (plugin.type == "app") {
+        plugin.icon = "https://unpkg.com/lucide-static@latest/icons/" + plugin.icon;
+      }
+
       return plugin
-    } else if (plugin.type == "app") {
-      
-      return plugin
-    }
 
   } catch (error) {
     toast.push(`Failed to fetch plugin:`, { theme: { '--toastBackground': 'red' } })
     return
   }
 }
-

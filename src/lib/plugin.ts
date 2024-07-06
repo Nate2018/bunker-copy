@@ -6,4 +6,5 @@ export interface Plugin {
     description: any 
     content: any
     type: String
+    icon?: string
   }

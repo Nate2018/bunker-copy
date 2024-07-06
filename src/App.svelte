@@ -14,8 +14,8 @@
 
 </script>
 <Sidebar />
-<div class="flex justify-center mt-20">
-    <div>
+<div class="flex justify-center overscroll-y-none">
+    <div class="w-full h-lvh overscroll-y-none">
         <svelte:component this={page} />
     </div>
 </div>

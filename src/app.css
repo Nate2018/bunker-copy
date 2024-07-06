@@ -56,3 +56,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+html {
+  overflow-x: hidden;
+  overflow: hidden;
+}

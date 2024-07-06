@@ -13,7 +13,6 @@
         props: $$restProps,
       })
     }
-  
     const cleanup = () => {
       if (!cmp) return
       cmp.$destroy()
@@ -32,4 +31,4 @@
     onDestroy(cleanup)
   </script>
   
-  <div bind:this={target} />
+  <div class="w-full h-full" bind:this={target} />

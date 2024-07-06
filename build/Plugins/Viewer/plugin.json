@@ -1,0 +1,9 @@
+{
+    "name": "Viewer",
+    "id": "cattn.viewer",
+    "description": "A widget for viewing websites within Bunker.",
+    "version": "1.0.0",
+    "author": "cattn",
+    "content": "App.js",
+    "type": "tile"
+}
