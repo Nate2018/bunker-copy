@@ -7,7 +7,8 @@ export const externalApps = writable<any[]>([]);
 export const externalAppLocations = writable<any[]>([]);
 export const currentApp = writable<any>();
 export const internalPlugins = writable<any[]>([]);
-export const internalPluginLocations = writable<any[]>([]);
+export const internalApps = writable<any[]>([]);
+export const currentAppType = writable<any>();
 
 export function loadStore() {
  // @ts-ignore

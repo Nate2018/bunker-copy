@@ -2,21 +2,50 @@
     import RouteButton from "$lib/components/routeButtons/RouteButton.svelte";
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import Button from "./ui/button/button.svelte";
-    import { House, LibraryBig, SquarePlus } from "lucide-svelte";
-    import { externalPlugins, loadStore, externalAppLocations, externalApps, currentApp } from "../store";
+    import { House, LibraryBig, SquarePlus, Gamepad2, Globe } from "lucide-svelte";
+    import { externalPlugins, loadStore, externalAppLocations, externalApps, currentApp, internalApps, currentAppType } from "../store";
     import { onMount } from 'svelte';
     import { fetchExternalPlugin } from "$lib/fetchplugin";
     import type { Plugin } from "$lib/plugin";
     import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
     import Input from "./ui/input/input.svelte";
     import { goto } from 'svelte-pathfinder'
+    import GBA from "$lib/internal/Apps/GBA/App.svelte";
+    import Viewer from "$lib/internal/Apps/Viewer/App.svelte";
 
     let appURL: string = '';
 
     onMount(async () => {
         loadStore();
         await loadApps();
+        await loadInternalApps();
     });
+
+    async function loadInternalApps() {
+        let internalApps1 = [
+            {
+                name: 'GBA',
+                id: 'bunker.gba',
+                version: '1.0.0',
+                author: 'cattn',
+                description: 'GBA',
+                content: GBA,
+                type: 'app',
+                icon: Gamepad2
+            },
+            {
+                name: 'Viewer',
+                id: 'bunker.viewer',
+                version: '1.0.0',
+                author: 'cattn',
+                description: 'A widget for viewing websites within Bunker.',
+                content: Viewer,
+                type: 'app',
+                icon: Globe
+            }
+        ];
+        internalApps.set(internalApps1);
+    }
 
     async function loadApps() {
         for (const app of $externalAppLocations) {
@@ -41,7 +70,12 @@
         externalAppLocations.set([]);
     }
 
-    function setActiveApp(plugin: Plugin) {
+    function setActiveApp(plugin: Plugin, type: string) {
+        if(type == "internal") {
+            currentAppType.set("internal");
+        } else {
+            currentAppType.set("external");
+        }
         currentApp.set(plugin);
         console.log("erm")
         goto("/app");
@@ -72,13 +106,27 @@
             <Tooltip.Root openDelay={50}>
               <Tooltip.Trigger asChild let:builder>
                 <!-- svelte-ignore a11y-missing-attribute -->
-                <Button builders={[builder]} on:click={() => setActiveApp(plugin)} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline"><LibraryBig /><!-- <img src={plugin.icon} /> --></Button>
+                <Button builders={[builder]} on:click={() => setActiveApp(plugin, "external")} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline"><LibraryBig /><!-- <img src={plugin.icon} /> --></Button>
               </Tooltip.Trigger>
               <Tooltip.Content class="border border-zinc-700" side="right">
                 <p>{plugin.name}</p>
               </Tooltip.Content>
             </Tooltip.Root>
           {/each}
+
+          {#if $internalApps}
+            {#each $internalApps as plugin}
+            <Tooltip.Root openDelay={50}>
+              <Tooltip.Trigger asChild let:builder>
+                <!-- svelte-ignore a11y-missing-attribute -->
+                <Button builders={[builder]} on:click={() => setActiveApp(plugin, "internal")} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline"><svelte:component this={plugin.icon}></svelte:component><!-- <img src={plugin.icon} /> --></Button>
+              </Tooltip.Trigger>
+              <Tooltip.Content class="border border-zinc-700" side="right">
+                <p>{plugin.name}</p>
+              </Tooltip.Content>
+            </Tooltip.Root>
+            {/each}
+          {/if}
           
         </div>
       </div>
@@ -105,8 +153,8 @@
             </AlertDialog.Header>
             <AlertDialog.Footer>
               <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+              <AlertDialog.Cancel on:click={() => clearApps()}>Clear Apps</AlertDialog.Cancel>
               <AlertDialog.Action on:click={() => fetchAndAddApp(appURL)}>Submit</AlertDialog.Action>
-              <AlertDialog.Action on:click={() => clearApps()}>Clear Apps</AlertDialog.Action>
             </AlertDialog.Footer>
           </AlertDialog.Content>
         </AlertDialog.Root>

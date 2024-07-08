@@ -1,9 +1,0 @@
-{
-    "name": "Real",
-    "id": "cattn.real",
-    "description": "A widget for viewing websites within Bunker.",
-    "version": "1.0.0",
-    "author": "cattn",
-    "content": "Real.svelte",
-    "type": "tile"
-}
