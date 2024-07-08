@@ -8,7 +8,6 @@ export async function fetchExternalPlugin(url: string): Promise<Plugin | undefin
     const blob = new Blob([code], { type: 'application/json' })
 
     const plugin = JSON.parse(await blob.text()) as Plugin
-    console.log(plugin)
    
     
       const moduleResponse = await fetch(url + plugin.content)

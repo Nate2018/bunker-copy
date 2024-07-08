@@ -2,7 +2,7 @@
     import RouteButton from "$lib/components/routeButtons/RouteButton.svelte";
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import Button from "./ui/button/button.svelte";
-    import { House, LibraryBig, SquarePlus, Gamepad2, Globe, FolderKanban } from "lucide-svelte";
+    import { House, LibraryBig, SquarePlus, Gamepad2, Globe, FolderKanban, ShoppingCart } from "lucide-svelte";
     import { externalPlugins, loadStore, externalAppLocations, externalApps, currentApp, internalApps, currentAppType } from "../store";
     import { onMount } from 'svelte';
     import { fetchExternalPlugin } from "$lib/fetchplugin";
@@ -35,7 +35,7 @@
                 type: 'app',
                 icon: Globe
             },
-            {
+             {
                 name: 'GBA',
                 id: 'bunker.gba',
                 version: '1.0.0',
@@ -44,13 +44,13 @@
                 content: GBA,
                 type: 'app',
                 icon: Gamepad2
-            },
+            }, 
             {
-                name: 'Plugin Manager',
-                id: 'bunker.pluginmanager',
+                name: 'Addon Manager',
+                id: 'bunker.addonmanager',
                 version: '1.0.0',
                 author: 'cattn',
-                description: 'Plugin Manager',
+                description: 'Addon Manager',
                 content: PluginManager,
                 type: 'app',
                 icon: FolderKanban
@@ -105,14 +105,14 @@
               <p>Home</p>
             </Tooltip.Content>
           </Tooltip.Root>
-          <!-- <Tooltip.Root openDelay={50}>
+          <Tooltip.Root openDelay={50}>
             <Tooltip.Trigger asChild let:builder>
-              <RouteButton builders={[builder]} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline" href="/viewer"><LibraryBig /></RouteButton>
+              <RouteButton builders={[builder]} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline" href="/store"><ShoppingCart /></RouteButton>
             </Tooltip.Trigger>
             <Tooltip.Content class="border border-zinc-700" side="right">
-              <p>Library</p>
+              <p>Store</p>
             </Tooltip.Content>
-          </Tooltip.Root> -->
+          </Tooltip.Root>
 
           {#each $externalApps as plugin}
             <Tooltip.Root openDelay={50}>

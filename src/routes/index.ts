@@ -1,10 +1,10 @@
 import Home from './Home.svelte'
-import Viewer from './Viewer.svelte'
+import Store from './Store.svelte'
 import App from './App.svelte'
 
 const routes = {
     '/': Home,
-    '/viewer': Viewer,
+    '/store': Store,
     '/app': App
 }
 
