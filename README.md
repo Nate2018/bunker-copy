@@ -2,6 +2,9 @@
   <h1>Bunker</h1>
 </div>
 
+## Downloading
+You can get bunker from the [Releases Tab](https://github.com/Cattn/bunker-svelte/releases/latest) currently. However in the future we plan to use a site to automatically write bunker, to make the download untracable. Also, bunker will later include an auto-updater.
+
 ## About
 The classic bunker, rebuilt from the ground up with a more modern take on it's UI, and with many more features. Bunker allows you to privately browse the web and perform other actions without being seen by filtering and spying extensions. Bunker was originally built by [JavaScythe](https://github.com/JavaScythe) and [Cattn](https://github.com/Cattn).
 
@@ -18,7 +21,7 @@ The classic bunker, rebuilt from the ground up with a more modern take on it's U
   
 You can view officially maintained apps at the [bunker-store](https://github.com/Cattn/bunker-store) repository. Here you can checkout the source of all the apps in the official bunker store!
 
-## Installation & Building
+## Building
 - Install Packages ``npm i``
 - Build ``npm run build``
 - Bunker will be built to build/
