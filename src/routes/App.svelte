@@ -1,7 +1,5 @@
 <script lang="ts">
     import PluginLoader from "$lib/components/PluginLoader.svelte";
-    import GBA from "$lib/internal/Apps/GBA/App.svelte";
-    import Viewer from "$lib/internal/Apps/Viewer/App.svelte";
     import { onMount } from 'svelte';
     import { currentApp, loadStore, currentAppType } from "../lib/store";
 

@@ -7,4 +7,5 @@ export interface Plugin {
     content: any
     type: String
     icon?: string
+    url?: string
   }

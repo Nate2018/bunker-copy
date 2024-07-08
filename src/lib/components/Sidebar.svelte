@@ -2,16 +2,18 @@
     import RouteButton from "$lib/components/routeButtons/RouteButton.svelte";
     import * as Tooltip from "$lib/components/ui/tooltip/index.js";
     import Button from "./ui/button/button.svelte";
-    import { House, LibraryBig, SquarePlus, Gamepad2, Globe } from "lucide-svelte";
+    import { House, LibraryBig, SquarePlus, Gamepad2, Globe, FolderKanban } from "lucide-svelte";
     import { externalPlugins, loadStore, externalAppLocations, externalApps, currentApp, internalApps, currentAppType } from "../store";
     import { onMount } from 'svelte';
     import { fetchExternalPlugin } from "$lib/fetchplugin";
     import type { Plugin } from "$lib/plugin";
     import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
     import Input from "./ui/input/input.svelte";
+    // @ts-ignore
     import { goto } from 'svelte-pathfinder'
     import GBA from "$lib/internal/Apps/GBA/App.svelte";
     import Viewer from "$lib/internal/Apps/Viewer/App.svelte";
+    import PluginManager from "$lib/internal/Apps/PluginManager/App.svelte";
 
     let appURL: string = '';
 
@@ -24,6 +26,16 @@
     async function loadInternalApps() {
         let internalApps1 = [
             {
+                name: 'Viewer',
+                id: 'bunker.viewer',
+                version: '1.0.0',
+                author: 'cattn',
+                description: 'A widget for viewing websites within Bunker.',
+                content: Viewer,
+                type: 'app',
+                icon: Globe
+            },
+            {
                 name: 'GBA',
                 id: 'bunker.gba',
                 version: '1.0.0',
@@ -34,14 +46,14 @@
                 icon: Gamepad2
             },
             {
-                name: 'Viewer',
-                id: 'bunker.viewer',
+                name: 'Plugin Manager',
+                id: 'bunker.pluginmanager',
                 version: '1.0.0',
                 author: 'cattn',
-                description: 'A widget for viewing websites within Bunker.',
-                content: Viewer,
+                description: 'Plugin Manager',
+                content: PluginManager,
                 type: 'app',
-                icon: Globe
+                icon: FolderKanban
             }
         ];
         internalApps.set(internalApps1);
@@ -93,14 +105,14 @@
               <p>Home</p>
             </Tooltip.Content>
           </Tooltip.Root>
-          <Tooltip.Root openDelay={50}>
+          <!-- <Tooltip.Root openDelay={50}>
             <Tooltip.Trigger asChild let:builder>
               <RouteButton builders={[builder]} class="py-7 bg-transparent hover:bg-zinc-700" variant="outline" href="/viewer"><LibraryBig /></RouteButton>
             </Tooltip.Trigger>
             <Tooltip.Content class="border border-zinc-700" side="right">
               <p>Library</p>
             </Tooltip.Content>
-          </Tooltip.Root>
+          </Tooltip.Root> -->
 
           {#each $externalApps as plugin}
             <Tooltip.Root openDelay={50}>
